@@ -5,9 +5,13 @@
  */
 package pkg8;
  
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -15,34 +19,27 @@ import java.sql.Statement;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
- 
+
 /**
- * This program demonstrates how to establish database connection to Microsoft
- * SQL Server.
- * @author www.codejava.net
  *
+ * @author MichielAdmin
  */
 public class JdbcSQLServerConnection {
+     
+        Connection conn = null;
     
-  Connection conn = null;
-  
-    public JdbcSQLServerConnection() {
-    }
-    
-    
-    public void openConnection()
-    {
+        public JdbcSQLServerConnection() {
+    } 
         
-        try {
- 
+        public void openConnection() {
+            try {
+            	
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String dbURL = "jdbc:sqlserver://localhost:1433";
-            
-            
             String user = "test";
             String pass = "test";
-            conn = DriverManager.getConnection(dbURL, user, pass);
             
+            conn = DriverManager.getConnection(dbURL, user, pass);
             if (conn != null) {
                 DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
                 System.out.println("Driver name: " + dm.getDriverName());
@@ -53,51 +50,40 @@ public class JdbcSQLServerConnection {
  
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JdbcSQLServerConnection.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    
-}
-    public void closeConnection()
-    {
-        try {
-             if (conn != null && !conn.isClosed()) {
+        }   catch (ClassNotFoundException ex) {
+                Logger.getLogger(JdbcSQLServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+        public void closeConnection() {
+            try {
+                if (conn != null && !conn.isClosed()) {
                     conn.close();
                 }
-        } catch (SQLException ex) {
+            } catch (SQLException ex ) {
                 ex.printStackTrace();
-                }
-    }
-    
-    public Vector GetRowData()
-    {
-        
-        openConnection();
-        ResultSet resultset = null;
-        Vector<Vector<Object>> vectorRij = new Vector<Vector<Object>>();
-        
-        try
-        {
-            Statement statement = conn.createStatement();
-            String QueryString = "select * from dbo.Table1";
-            resultset = statement.executeQuery(QueryString);
-            
-        }
-        catch(Exception e)
-        {
-          System.err.println("Craught IOException: " + e.getMessage());
-          
+            }
         }
         
-        try {
+        public Vector GetRowData() {
             
-             
-            while(resultset.next())
+            openConnection();
+            ResultSet resultset = null;
+            Vector<Vector<Object>> vectorRij = new Vector<Vector<Object>>();
+            
+            try {
+                    Statement stmt = conn.createStatement();
+                    String QueryString = "SELECT * FROM dbo.Table1";
+                    resultset = stmt.executeQuery(QueryString);
+                } catch (Exception ex) {
+                    System.err.println("Caught IOException: " + ex.getMessage());
+                }      
+            
+            try {
+             while(resultset.next())
             {
         int ColumnCount = resultset.getMetaData().getColumnCount();
-                       Vector<Object> vectorKolom = new Vector<Object>();
-                       
-
+            Vector<Object> vectorKolom = new Vector<Object>();
                     for (int i=1; i<=ColumnCount; i++)
                     {
                         String columnType = resultset.getMetaData().getColumnTypeName(i);
@@ -120,22 +106,18 @@ public class JdbcSQLServerConnection {
                                 Foto foto = new Foto(resultset.getBlob(i));
                                 vectorKolom.addElement(foto);
                                 break;  
-                                 
-                        
                     }
                     }
                     vectorRij.addElement(vectorKolom);
             }
+            return vectorRij;
               }
             catch (SQLException ex) {
-            Logger.getLogger(MyData.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MyData.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+            }
         }
         
-            closeConnection();
-            return vectorRij;
-    }
-    
     public Vector GetCollumnNameData()
     {
         ResultSet resultset = null;
@@ -152,38 +134,53 @@ public class JdbcSQLServerConnection {
             
             ResultSetMetaData meta = resultset.getMetaData();
             int columnCount = meta.getColumnCount();
-               
                for (int i=1; i<=columnCount; i++) {
                    vectorKolom.addElement(meta.getColumnName(i));
                }
-               
+               return vectorKolom;
              } catch (SQLException ex) {
             Logger.getLogger(MyData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-          closeConnection();
-          return vectorKolom;
+            return null;
+        }   
+    }  
     
-    }
-    
-    public int GetCollumnCount()
-    {
-            ResultSet resultset = null;
-            int columnCount = 0;
-            openConnection();
-            
-       try {
+    public int GetCollumnCount() {
+        ResultSet resultset = null;
+        int columnCount = 0;
+        openConnection();
+        
+        try {
             Statement statement = conn.createStatement();
             String QueryString = "select * from dbo.Table1";
             resultset = statement.executeQuery(QueryString);
-            ResultSetMetaData meta = resultset.getMetaData();
-            columnCount = meta.getColumnCount();
-            
-      } catch (SQLException ex) {
-          Logger.getLogger(JdbcSQLServerConnection.class.getName()).log(Level.SEVERE, null, ex);
-      }
-       closeConnection();
-       return columnCount;
-    } 
-}
+            ResultSetMetaData metaData = resultset.getMetaData();
+            columnCount = metaData.getColumnCount();
+        } catch (SQLException ex) {
+            Logger.getLogger(JdbcSQLServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return columnCount;
+    }
     
-   
+    public void InsertData(/*int kolomA, int kolomB, int kolomC, boolean checkBox, String picture*/) {
+        openConnection();
+        String query = "INSERT INTO dbo.Table1(A, B, C, D, Foto) values(?, ?, ?, ?, ?)";
+        FileInputStream fis = null;
+        PreparedStatement ps = null;
+        
+        try {
+        File file = new File(/*picture*/"C:\\Users\\Michiel\\Documents\\School\\Projects 3\\scrum.PNG");
+        fis = new FileInputStream(file);
+        ps = conn.prepareStatement(query);
+        ps.setInt(1, /*kolomA*/7);
+        ps.setInt(2, /*kolomB*/8);
+        ps.setInt(3, /*kolomC*/9);
+        ps.setBoolean(4, /*checkBox*/true);
+        ps.setBinaryStream(5, fis, (int) file.length());
+        ps.executeQuery();
+        conn.commit();
+        } catch(Exception ex) {
+           
+        } 
+    }
+}

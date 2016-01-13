@@ -13,29 +13,29 @@ import javax.swing.filechooser.FileFilter;
  * @author Tom
  */
 public class ImageFilter extends FileFilter {
-    
-    ImageFilter(){
+    ImageFilter()
+    {
         
     }
     
     @Override
-    public boolean accept(File file) {
-        if (file.isDirectory())
+    public boolean accept(File file)
+    {
+        if(file.isDirectory())
             return true;
-        if (file.getName().endsWith(".jpg"))
+        if(file.getName().endsWith(".jpg"))
             return true;
-        if (file.getName().endsWith(".jpeg"))
+        if(file.getName().endsWith(".jpeg"))
             return true;
-        if (file.getName().endsWith(".gif"))
+        if(file.getName().endsWith(".gif"))
             return true;
-         if (file.getName().endsWith(".PNG"))
+        if(file.getName().endsWith(".PNG"))
             return true;
         return false;
     }
     
     @Override
-    public String getDescription(){
+    public String getDescription() {
         return ("Fotobestanden");
     }
-    
 }
