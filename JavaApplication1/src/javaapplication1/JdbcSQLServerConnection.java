@@ -169,7 +169,7 @@ public class JdbcSQLServerConnection {
         PreparedStatement ps = null;
         
         try {
-        File file = new File(/*picture*/"C:\\Users\\Tom\\Desktop\\bilbo.JPG");
+        File file = new File(/*picture*/"SED.jpg");
         fis = new FileInputStream(file);
         ps = conn.prepareStatement(query);
         ps.setInt(1, /*kolomA*/7);
