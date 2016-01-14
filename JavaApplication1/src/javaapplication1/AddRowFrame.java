@@ -47,10 +47,10 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         btnAdd = new JButton("Add");
         btnCancel = new JButton("Cancel");
         btnClear = new JButton("Clear");
-        btnFoto = new JButton("Browse");
+       // btnFoto = new JButton("Browse");
         btnCancel.addActionListener(this);
         btnAdd.addActionListener(this);
-        btnFoto.addActionListener(this);
+       // btnFoto.addActionListener(this);
         db = new JdbcSQLServerConnection();
         f = new JFrame("Add row");
         
@@ -77,14 +77,19 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                     p.add(checkBoxBoolean);
                     break;
                 case "class javaapplication1.Foto" :
-                    textFieldFoto = new JTextField(10);
-                    lbl.setLabelFor(textFieldFoto);
-                    p.add(textFieldFoto);
+                    JButton btnFoto = new JButton("Browse");
+                    btnFoto.setActionCommand((Actions.SHOW.name()));
+                    btnFoto.addActionListener(this);
+                    p.add(btnFoto);
                     break;
+                   
             }
         }
+      
+        //p.add(btnFoto);
+        JLabel lbl = new JLabel("Clear this", JLabel.TRAILING);
+        p.add(lbl);
         p.add(btnClear);
-        p.add(btnFoto);
         p.add(btnAdd);
         p.add(btnCancel);
         SpringUtilities.makeCompactGrid(p, 
@@ -101,9 +106,9 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         if(evt.getSource() == btnCancel){
             f.dispose();
         } else if(evt.getSource() == btnAdd) {
-            String fotoPath = textFieldFoto.getText();
+            //String fotoPath = textFieldFoto.getText();
             db.InsertData();
-        } else if(evt.getSource() == btnFoto) {
+        } else if(evt.getActionCommand() == Actions.SHOW.name()) {
             final JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new ImageFilter());
             int returnVal = fc.showOpenDialog(null);
@@ -112,5 +117,10 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                 textFieldFoto.setText(file.getPath());
             }
         }
+    }
+    
+    private enum Actions
+    {
+        SHOW
     }
 }
