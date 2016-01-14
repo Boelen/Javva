@@ -5,10 +5,13 @@
  */
 package javaapplication1;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,6 +31,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
     private JFrame f;
     private JdbcSQLServerConnection db;
     private Vector<String> vectorCollumnTypes;
+    private ArrayList<Object> GridValues;
     private JButton btnCancel;
     private JButton btnAdd;
     private JButton btnFoto;
@@ -43,7 +47,8 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         int i = 0;
         Vector<String> vectorCollumnNames = new Vector<String>();
         Vector<Vector<Object>> vectorRowData = new Vector<Vector<Object>>();
-        
+        GridValues = new ArrayList<Object>();
+                
         btnAdd = new JButton("Add");
         btnCancel = new JButton("Cancel");
         btnClear = new JButton("Clear");
@@ -64,22 +69,26 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             switch(vectorCollumnTypes.elementAt(i)) {
                 case "class java.lang.Integer" :
                     JTextField textFieldInteger = new JTextField(10);
+                    GridValues.add(textFieldInteger);
                     lbl.setLabelFor(textFieldInteger);
                     p.add(textFieldInteger);
                     break;
                 case "class java.lang.String" :
                     JTextField textFieldString = new JTextField(10);
+                     GridValues.add(textFieldString);
                     lbl.setLabelFor(textFieldString);
                     p.add(textFieldString);
                     break;
                 case "class java.lang.Boolean" :
                     JCheckBox checkBoxBoolean = new JCheckBox();
+                    GridValues.add(checkBoxBoolean);
                     p.add(checkBoxBoolean);
                     break;
                 case "class javaapplication1.Foto" :
                     JButton btnFoto = new JButton("Browse");
                     btnFoto.setActionCommand((Actions.SHOW.name()));
                     btnFoto.addActionListener(this);
+                    GridValues.add(btnFoto);
                     p.add(btnFoto);
                     break;
                    
@@ -107,6 +116,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             f.dispose();
         } else if(evt.getSource() == btnAdd) {
             //String fotoPath = textFieldFoto.getText();
+           
             db.InsertData();
         } else if(evt.getActionCommand() == Actions.SHOW.name()) {
             final JFileChooser fc = new JFileChooser();
@@ -114,7 +124,8 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             int returnVal = fc.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                textFieldFoto.setText(file.getPath());
+             
+                //textFieldFoto.setText(file.getPath());
             }
         }
     }
