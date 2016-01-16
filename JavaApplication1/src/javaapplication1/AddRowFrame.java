@@ -31,7 +31,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
     private JFrame f;
     private JdbcSQLServerConnection db;
     private Vector<String> vectorCollumnTypes;
-    private ArrayList<Object> GridValues;
+    private Vector<Object> GridValues;
     private JButton btnCancel;
     private JButton btnAdd;
     private JButton btnFoto;
@@ -47,7 +47,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         int i = 0;
         Vector<String> vectorCollumnNames = new Vector<String>();
         Vector<Vector<Object>> vectorRowData = new Vector<Vector<Object>>();
-        GridValues = new ArrayList<Object>();
+        GridValues = new Vector<Object>();
                 
         btnAdd = new JButton("Add");
         btnCancel = new JButton("Cancel");
@@ -75,7 +75,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                     break;
                 case "class java.lang.String" :
                     JTextField textFieldString = new JTextField(10);
-                     GridValues.add(textFieldString);
+                    GridValues.add(textFieldString);
                     lbl.setLabelFor(textFieldString);
                     p.add(textFieldString);
                     break;
@@ -90,8 +90,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                     btnFoto.addActionListener(this);
                     GridValues.add(btnFoto);
                     p.add(btnFoto);
-                    break;
-                   
+                    break;       
             }
         }
       
@@ -117,14 +116,14 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         } else if(evt.getSource() == btnAdd) {
             //String fotoPath = textFieldFoto.getText();
            
-            db.InsertData();
+            db.InsertData(GridValues);
         } else if(evt.getActionCommand() == Actions.SHOW.name()) {
             final JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new ImageFilter());
             int returnVal = fc.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-             
+                
                 //textFieldFoto.setText(file.getPath());
             }
         }

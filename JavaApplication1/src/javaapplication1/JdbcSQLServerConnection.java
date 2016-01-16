@@ -16,9 +16,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 
 /**
  *
@@ -162,14 +164,24 @@ public class JdbcSQLServerConnection {
         return columnCount;
     }
     
-    public void InsertData(/*int kolomA, int kolomB, int kolomC, boolean checkBox, String picture*/) {
+    public void InsertData(Vector<Object> gridValues) {
         openConnection();
         String query = "INSERT INTO dbo.JavaTable(A, B, C, D, Foto) values(?, ?, ?, ?, ?)";
         FileInputStream fis = null;
         PreparedStatement ps = null;
+        int kolomA, kolomB, kolomC;
         
         try {
-        File file = new File(/*picture*/"SED.jpg");
+        
+        for(int i = 0; i < gridValues.size(); i++) {
+            Object value = gridValues.elementAt(i);
+            if (value instanceof JTextField)
+            {
+                kolomA = Integer.parseInt(((JTextField)value).getText());
+            }
+        }   
+            
+        File file = new File(/*picture*/"C:\\Users\\Michiel\\Documents\\NetBeansProjects\\Javva\\JavaApplication1\\src\\javaapplication1\\SED.jpg");
         fis = new FileInputStream(file);
         ps = conn.prepareStatement(query);
         ps.setInt(1, /*kolomA*/7);
