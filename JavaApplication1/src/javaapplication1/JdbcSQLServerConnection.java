@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
 /**
@@ -169,26 +171,34 @@ public class JdbcSQLServerConnection {
         String query = "INSERT INTO dbo.JavaTable(A, B, C, D, Foto) values(?, ?, ?, ?, ?)";
         FileInputStream fis = null;
         PreparedStatement ps = null;
-        int kolomA, kolomB, kolomC;
+        int getal;
+        boolean bool;
         
         try {
-        
+        ps = conn.prepareStatement(query);
         for(int i = 0; i < gridValues.size(); i++) {
             Object value = gridValues.elementAt(i);
             if (value instanceof JTextField)
             {
-                kolomA = Integer.parseInt(((JTextField)value).getText());
+                getal = Integer.parseInt(((JTextField)value).getText());
+                ps.setInt(i, getal);
+            } else if (value instanceof JCheckBox) {
+                bool = ((JCheckBox)value).isSelected();
+                ps.setBoolean(i, bool);
+            } else if (value instanceof JButton) {
+               // File file = new File();
+                //fis = new FileInputStream();
             }
         }   
             
-        File file = new File(/*picture*/"C:\\Users\\Michiel\\Documents\\NetBeansProjects\\Javva\\JavaApplication1\\src\\javaapplication1\\SED.jpg");
-        fis = new FileInputStream(file);
-        ps = conn.prepareStatement(query);
-        ps.setInt(1, /*kolomA*/7);
-        ps.setInt(2, /*kolomB*/8);
-        ps.setInt(3, /*kolomC*/9);
-        ps.setBoolean(4, /*checkBox*/true);
-        ps.setBinaryStream(5, fis, (int) file.length());
+        //File file = new File(/*picture*/"C:\\Users\\Michiel\\Documents\\NetBeansProjects\\Javva\\JavaApplication1\\src\\javaapplication1\\SED.jpg");
+        //fis = new FileInputStream(file);
+        //ps.conn.prepareStatement(query);
+//        ps.setInt(1, /*kolomA*/7);
+//        ps.setInt(2, /*kolomB*/8);
+//        ps.setInt(3, /*kolomC*/9);
+       // ps.setBoolean(4, /*checkBox*/true);
+       // ps.setBinaryStream(5, fis, (int) file.length());
         ps.executeQuery();
         conn.commit();
         } catch(Exception ex) {

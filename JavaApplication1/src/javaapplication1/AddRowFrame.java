@@ -117,7 +117,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             //String fotoPath = textFieldFoto.getText();
            
             db.InsertData(GridValues);
-        } else if(evt.getActionCommand() == Actions.SHOW.name()) {
+        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
             final JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new ImageFilter());
             int returnVal = fc.showOpenDialog(null);
