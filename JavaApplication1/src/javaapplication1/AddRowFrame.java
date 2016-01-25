@@ -115,6 +115,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         
         if(evt.getSource() == btnCancel){
             f.dispose();
+            new NewJFrame().setVisible(true);
         } else if(evt.getSource() == btnAdd) {           
             db.InsertData(GridValues, file);
             f.dispose();
