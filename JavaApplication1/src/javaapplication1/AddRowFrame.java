@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -114,11 +115,10 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         
         if(evt.getSource() == btnCancel){
             f.dispose();
-        } else if(evt.getSource() == btnAdd) {
-            //String fotoPath = textFieldFoto.getText();
-           
+        } else if(evt.getSource() == btnAdd) {           
             db.InsertData(GridValues, file);
             f.dispose();
+            new NewJFrame().setVisible(true);
         } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
             final JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new ImageFilter());
