@@ -166,7 +166,7 @@ public class JdbcSQLServerConnection {
         return columnCount;
     }
     
-    public void InsertData(Vector<Object> gridValues) {
+    public void InsertData(Vector<Object> gridValues, File file) {
         openConnection();
         String query = "INSERT INTO dbo.JavaTable(A, B, C, D, Foto) values(?, ?, ?, ?, ?)";
         FileInputStream fis = null;
@@ -181,24 +181,15 @@ public class JdbcSQLServerConnection {
             if (value instanceof JTextField)
             {
                 getal = Integer.parseInt(((JTextField)value).getText());
-                ps.setInt(i, getal);
+                ps.setInt(i + 1, getal);
             } else if (value instanceof JCheckBox) {
                 bool = ((JCheckBox)value).isSelected();
-                ps.setBoolean(i, bool);
+                ps.setBoolean(i + 1, bool);
             } else if (value instanceof JButton) {
-               // File file = new File();
-                //fis = new FileInputStream();
+                fis = new FileInputStream(file);
+                ps.setBinaryStream(i + 1, fis, (int) file.length());
             }
         }   
-            
-        //File file = new File(/*picture*/"C:\\Users\\Michiel\\Documents\\NetBeansProjects\\Javva\\JavaApplication1\\src\\javaapplication1\\SED.jpg");
-        //fis = new FileInputStream(file);
-        //ps.conn.prepareStatement(query);
-//        ps.setInt(1, /*kolomA*/7);
-//        ps.setInt(2, /*kolomB*/8);
-//        ps.setInt(3, /*kolomC*/9);
-       // ps.setBoolean(4, /*checkBox*/true);
-       // ps.setBinaryStream(5, fis, (int) file.length());
         ps.executeQuery();
         conn.commit();
         } catch(Exception ex) {

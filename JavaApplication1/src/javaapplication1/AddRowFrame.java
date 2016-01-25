@@ -37,6 +37,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
     private JButton btnFoto;
     private JButton btnClear;
     private JTextField textFieldFoto;
+    private File file;
     
     public AddRowFrame(Vector<String> vectorCollumnTypes) {
         this.vectorCollumnTypes = vectorCollumnTypes;
@@ -116,14 +117,20 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         } else if(evt.getSource() == btnAdd) {
             //String fotoPath = textFieldFoto.getText();
            
-            db.InsertData(GridValues);
+            db.InsertData(GridValues, file);
         } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
             final JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new ImageFilter());
             int returnVal = fc.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
+                //File file = fc.getSelectedFile();
                 
+            for(int i = 0; i < GridValues.size(); i++) {
+            Object value = GridValues.elementAt(i);
+             if (value instanceof JButton) {
+                file = fc.getSelectedFile();
+            }
+            }     
                 //textFieldFoto.setText(file.getPath());
             }
         }
