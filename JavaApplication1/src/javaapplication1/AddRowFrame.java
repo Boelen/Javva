@@ -52,6 +52,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
        // btnFoto = new JButton("Browse");
         btnCancel.addActionListener(this);
         btnAdd.addActionListener(this);
+        btnClear.addActionListener(this);
        // btnFoto.addActionListener(this);
         db = new JdbcSQLServerConnection();
         f = new JFrame("Add row");
@@ -134,6 +135,16 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             db.InsertData(GridValues);
             f.dispose();
             new NewJFrame().setVisible(true);
+        } else if(evt.getSource() == btnClear) {
+            for(int i = 0; i < GridValues.size(); i++) {
+            Object value = GridValues.elementAt(i);
+             if (value instanceof JTextField) {
+                ((JTextField)value).setText("");
+            } else if (value instanceof JCheckBox) {
+                ((JCheckBox)value).setSelected(false);
+            }
+            }
+            
         }
 //        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
 //            final JFileChooser fc = new JFileChooser();
