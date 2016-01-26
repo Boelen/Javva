@@ -245,5 +245,74 @@ public class JdbcSQLServerConnection {
         
     }
     
+    public void UpdateData(int KeyID,Vector<Object> data)
+    {
+        FileInputStream fis = null;
+        PreparedStatement ps = null;
+        int getal;
+        boolean bool;
+        String query;
+        String Fout;
+        Foto foto;
+       
+        String sql = "UPDATE dbo.JavaTable SET ";
+      
+        
+        String QueryString = "SELECT * FROM dbo.JavaTable";
+        
+        openConnection();
+        
+        try{
+            Statement statment = conn.createStatement();                               //creating a statement obj
+            
+            ResultSet resultset = statment.executeQuery(QueryString);              //querying the given table
+            
+            ResultSetMetaData meta =  resultset.getMetaData();                        //requesting the meta data
+            
+            sql += " " + meta.getColumnName(2);                                 //adding the first col name to th query
+            
+            for(int i = 3; i < (meta.getColumnCount() + 1);i++){                
+                 sql += " = ?, " + meta.getColumnName(i) ;                          //adding the column names to the query
+            }
+            
+            sql += "= ?  WHERE " + meta.getColumnName(1).toString() + " = " + data.elementAt(0).toString();
+            
+            
+            ps= conn.prepareStatement(sql);
+         
+            
+              for(int i = 1; i < data.size(); i++) {
+            Object value = data.elementAt(i);
+            
+            if (value instanceof Integer)
+            {
+                getal = (Integer) value;
+                ps.setInt(i + 1, getal);
+            } else if (value instanceof Boolean) {
+                bool = (Boolean) value;
+                ps.setBoolean(i + 1, bool);
+            } else if (value instanceof Foto) {
+                
+                foto = (Foto) value;
+                String path = foto.Path;
+                fis = new FileInputStream(foto.Path);
+                ps.setBinaryStream(i + 1, fis, (int) ((File)value).length());
+            }
+        }   
+              
+              
+         ps.executeUpdate();                                               //excecuting the statement
+         
+         closeConnection();
+            
+    }
+        
+        catch(Exception ex)
+        {
+            Fout = ex.getMessage();
+            
+        }
+    
+}
 }
 
