@@ -83,8 +83,27 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                     break;
                 case "class javaapplication1.Foto" :
                     JButton btnFoto = new JButton("Browse");
-                    btnFoto.setActionCommand((Actions.SHOW.name()));
-                    btnFoto.addActionListener(this);
+//                    btnFoto.setActionCommand((Actions.SHOW.name()));
+                    
+                    btnFoto.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                        // create format string
+                            
+                             final JFileChooser fc = new JFileChooser();
+                             fc.setFileFilter(new ImageFilter());
+                             int returnVal = fc.showOpenDialog(null);
+            
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                   
+                            File file = fc.getSelectedFile();
+                            GridValues.add(file);
+                             btnFoto.setText(file.toString());
+                             btnFoto.setEnabled(false);
+                         }
+                       
+            }
+         });
                     GridValues.add(btnFoto);
                     p.add(btnFoto);
                     break;       
@@ -112,24 +131,25 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
             f.dispose();
             new NewJFrame().setVisible(true);
         } else if(evt.getSource() == btnAdd) {           
-            db.InsertData(GridValues, file);
+            db.InsertData(GridValues);
             f.dispose();
             new NewJFrame().setVisible(true);
-        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
-            final JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(new ImageFilter());
-            int returnVal = fc.showOpenDialog(null);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                //File file = fc.getSelectedFile();
-                
-            for(int i = 0; i < GridValues.size(); i++) {
-            Object value = GridValues.elementAt(i);
-             if (value instanceof JButton) {
-                file = fc.getSelectedFile();
-            }
-            }     
-            }
         }
+//        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
+//            final JFileChooser fc = new JFileChooser();
+//            fc.setFileFilter(new ImageFilter());
+//            int returnVal = fc.showOpenDialog(null);
+//            if (returnVal == JFileChooser.APPROVE_OPTION) {
+//                //File file = fc.getSelectedFile();
+//                
+//            for(int i = 0; i < GridValues.size(); i++) {
+//            Object value = GridValues.elementAt(i);
+//             if (value instanceof JButton) {
+//                file = fc.getSelectedFile();
+//            }
+//            }     
+//            }
+//        }
     }
     
     private enum Actions
