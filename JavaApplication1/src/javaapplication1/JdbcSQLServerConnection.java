@@ -213,6 +213,7 @@ public class JdbcSQLServerConnection {
                 bool = ((JCheckBox)value).isSelected();
                 ps.setBoolean(i + 1, bool);
             } else if (value instanceof File) {
+                
                 fis = new FileInputStream((File)value);
                 ps.setBinaryStream(i + 1, fis, (int) ((File)value).length());
             }
@@ -252,7 +253,7 @@ public class JdbcSQLServerConnection {
         PreparedStatement ps = null;
         int getal;
         boolean bool;
-        int query;
+        long query;
         Foto foto;
        
         String sql = "UPDATE dbo.JavaTable SET ";
@@ -304,9 +305,10 @@ public class JdbcSQLServerConnection {
                 }
                 else
                 {
-                query = foto.Path.length();
-                fis = new FileInputStream(foto.Path);
-                ps.setBinaryStream(i, fis,(int) foto.file.length());
+                query = foto.file.length();
+                File file = new File(foto.Path);
+                fis = new FileInputStream(file);
+                ps.setBinaryStream(i, fis,(int) file.length());
                 }
                 
                 //ps.setBinaryStream(i + 1, in, (int) ((File)value).length());
