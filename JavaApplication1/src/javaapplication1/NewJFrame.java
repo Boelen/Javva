@@ -159,7 +159,7 @@ public class NewJFrame extends javax.swing.JFrame {
         new NewJFrame().setVisible(true);
             
         }catch(Exception e){
-          jLabel1.setText( "Pleas select a row");
+          jLabel1.setText( "select a row");
         }  
     }//GEN-LAST:event_jButton1ActionPerformed
 

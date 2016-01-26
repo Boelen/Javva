@@ -46,7 +46,7 @@ class MijnTableModel extends AbstractTableModel {
         
         //return dataContainer.isCellEditable(col);
         
-        if (col < 2) {
+        if (col < 1) {
             return false;
         } else {
             return dataContainer.isCellEditable(col);

@@ -252,7 +252,7 @@ public class JdbcSQLServerConnection {
         PreparedStatement ps = null;
         int getal;
         boolean bool;
-        String query;
+        int query;
         Foto foto;
        
         String sql = "UPDATE dbo.JavaTable SET ";
@@ -294,10 +294,20 @@ public class JdbcSQLServerConnection {
             } else if (value instanceof Foto) {
                 
                 foto = (Foto) value;
+                
+                if(foto.Path == null)
+                {
                 Blob blob = foto.file;
                 InputStream in = blob.getBinaryStream();
                 
                 ps.setBinaryStream(i, in, blob.length() );
+                }
+                else
+                {
+                query = foto.Path.length();
+                fis = new FileInputStream(foto.Path);
+                ps.setBinaryStream(i, fis,(int) foto.file.length());
+                }
                 
                 //ps.setBinaryStream(i + 1, in, (int) ((File)value).length());
             }
