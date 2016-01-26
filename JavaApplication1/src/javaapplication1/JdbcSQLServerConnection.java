@@ -201,8 +201,9 @@ public class JdbcSQLServerConnection {
                  
          
         ps = conn.prepareStatement(query);
-        for(int i = 0; i < gridValues.size(); i++) {
-            Object value = gridValues.elementAt(i);
+        
+        for(int i = 0; i < gridValues.size() - 1; i++) {
+            Object value = gridValues.elementAt(i+1);
             if (value instanceof JTextField)
             {
                 getal = Integer.parseInt(((JTextField)value).getText());
@@ -212,14 +213,37 @@ public class JdbcSQLServerConnection {
                 ps.setBoolean(i + 1, bool);
             } else if (value instanceof File) {
                 fis = new FileInputStream((File)value);
-                ps.setBinaryStream(i + 1, fis);
+                ps.setBinaryStream(i + 1, fis, (int) ((File)value).length());
             }
         }   
+        
         ps.executeQuery();
         conn.commit();
+        String FOUT2 = "lala";
         } catch(Exception ex) {
            
+            String FOUT = ex.getMessage();
+            System.err.println("Caught IOException: " + ex.getMessage());
         } 
     }
+    
+    
+    public void DeleteData(int ID){
+        
+        String sql = "DELETE FROM dbo.JavaTable WHERE Sleutel="+ID;
+        
+        openConnection();
+        try{
+            Statement stmt = conn.createStatement();
+            
+            stmt.execute(sql);
+             
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        closeConnection();
+        
+    }
+    
 }
 

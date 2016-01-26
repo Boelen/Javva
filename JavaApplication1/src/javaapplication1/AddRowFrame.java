@@ -104,7 +104,7 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                        
             }
          });
-                    GridValues.add(btnFoto);
+                    
                     p.add(btnFoto);
                     break;       
             }
