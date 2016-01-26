@@ -166,15 +166,40 @@ public class JdbcSQLServerConnection {
         return columnCount;
     }
     
-    public void InsertData(Vector<Object> gridValues, File file) {
+    public void InsertData(Vector<Object> gridValues) {
         openConnection();
-        String query = "INSERT INTO dbo.JavaTable(A, B, C, D, Foto) values(?, ?, ?, ?, ?)";
+        
         FileInputStream fis = null;
         PreparedStatement ps = null;
         int getal;
         boolean bool;
+        String query;
         
-        try {
+        try
+        {
+        query = "INSERT INTO dbo.JavaTable(";
+        String QueryString = "SELECT * FROM dbo.JavaTable";
+        Statement stmt = conn.createStatement();
+         
+        ResultSet resultset = stmt.executeQuery(QueryString);
+         ResultSetMetaData meta = resultset.getMetaData();
+         
+          query += " " + meta.getColumnName(2);                                 //adding the first col name to th query
+            
+            for(int i = 3; i < (meta.getColumnCount() + 1);i++){                
+                 query += ", " + meta.getColumnName(i) ;                          //adding the column names to the query
+            }
+            
+            query += " ) VALUES (?";
+            
+            for(int i = 1; i < (meta.getColumnCount() -1); i++){
+                query += ", ?";                                                   
+            }
+            
+            query += " )";
+        
+                 
+         
         ps = conn.prepareStatement(query);
         for(int i = 0; i < gridValues.size(); i++) {
             Object value = gridValues.elementAt(i);
@@ -185,9 +210,9 @@ public class JdbcSQLServerConnection {
             } else if (value instanceof JCheckBox) {
                 bool = ((JCheckBox)value).isSelected();
                 ps.setBoolean(i + 1, bool);
-            } else if (value instanceof JButton) {
-                fis = new FileInputStream(file);
-                ps.setBinaryStream(i + 1, fis, (int) file.length());
+            } else if (value instanceof File) {
+                fis = new FileInputStream((File)value);
+                ps.setBinaryStream(i + 1, fis);
             }
         }   
         ps.executeQuery();
