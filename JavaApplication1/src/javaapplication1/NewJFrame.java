@@ -106,6 +106,7 @@ public class NewJFrame extends javax.swing.JFrame {
         }
         
         AddRowFrame input = new AddRowFrame(vectorCollumnTypes);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

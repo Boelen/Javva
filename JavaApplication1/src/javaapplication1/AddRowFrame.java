@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaapplication1;
 
 
@@ -21,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -87,31 +83,9 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
                     break;
                 case "class javaapplication1.Foto" :
                     JButton btnFoto = new JButton("Browse");
-                    
-                   // btnFoto.setActionCommand((Actions.SHOW.name()));
-                    // btnFoto.addActionListener(this);
-                    
-                    btnFoto.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                        // create format string
-                            
-                             final JFileChooser fc = new JFileChooser();
-                             fc.setFileFilter(new ImageFilter());
-                             int returnVal = fc.showOpenDialog(null);
-            
-                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                   
-                            File file = fc.getSelectedFile();
-                            GridValues.add(file);
-                             btnFoto.setText(file.toString());
-                             btnFoto.setEnabled(false);
-                         }
-                       
-            }
-         });
-                   
-                    
+                    btnFoto.setActionCommand((Actions.SHOW.name()));
+                    btnFoto.addActionListener(this);
+                    GridValues.add(btnFoto);
                     p.add(btnFoto);
                     break;       
             }
@@ -136,28 +110,25 @@ public class AddRowFrame extends javax.swing.JPanel implements ActionListener {
         
         if(evt.getSource() == btnCancel){
             f.dispose();
-        } else if(evt.getSource() == btnAdd) {
-            //String fotoPath = textFieldFoto.getText();
-           
-            db.InsertData(GridValues);
+            new NewJFrame().setVisible(true);
+        } else if(evt.getSource() == btnAdd) {           
+            db.InsertData(GridValues, file);
             f.dispose();
-//        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
-//            final JFileChooser fc = new JFileChooser();
-//            fc.setFileFilter(new ImageFilter());
-//            int returnVal = fc.showOpenDialog(null);
-//            
-//            if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                   
-//                File file = fc.getSelectedFile();
-//                GridValues.add(file);
-////                
-////            for(int i = 0; i < GridValues.size(); i++) {
-////            Object value = GridValues.elementAt(i);
-////             if (value instanceof JButton) {
-////                file = fc.getSelectedFile();
-////            }
-////            }     
-//            }
+            new NewJFrame().setVisible(true);
+        } else if(evt.getActionCommand().equals(Actions.SHOW.name())) {
+            final JFileChooser fc = new JFileChooser();
+            fc.setFileFilter(new ImageFilter());
+            int returnVal = fc.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                //File file = fc.getSelectedFile();
+                
+            for(int i = 0; i < GridValues.size(); i++) {
+            Object value = GridValues.elementAt(i);
+             if (value instanceof JButton) {
+                file = fc.getSelectedFile();
+            }
+            }     
+            }
         }
     }
     
