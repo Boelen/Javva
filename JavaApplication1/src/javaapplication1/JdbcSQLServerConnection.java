@@ -221,7 +221,6 @@ public class JdbcSQLServerConnection {
         
         ps.executeQuery();
         conn.commit();
-        String FOUT2 = "lala";
         } catch(Exception ex) {
            
             String FOUT = ex.getMessage();
@@ -253,7 +252,6 @@ public class JdbcSQLServerConnection {
         PreparedStatement ps = null;
         int getal;
         boolean bool;
-        long query;
         Foto foto;
        
         String sql = "UPDATE dbo.JavaTable SET ";
@@ -305,7 +303,7 @@ public class JdbcSQLServerConnection {
                 }
                 else
                 {
-                query = foto.file.length();
+                    
                 File file = new File(foto.Path);
                 fis = new FileInputStream(file);
                 ps.setBinaryStream(i, fis,(int) file.length());

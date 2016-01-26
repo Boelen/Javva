@@ -37,12 +37,9 @@ public class NewJFrame extends javax.swing.JFrame {
         data = new MyData();
         mijnTableModel.setData(data);
         initComponents();
-        jTable1.setDefaultRenderer(LookupKey.class, new ColorRenderer(true));
-        jTable1.setDefaultRenderer(Color.class, new ColorRenderer(true));
+        
         jTable1.setDefaultRenderer(Foto.class, new ColorRenderer(true));
-        jTable1.setDefaultEditor(Color.class, new ColorEditor());
         jTable1.setDefaultEditor(Foto.class, new FileChooser());
-        jTable1.setDefaultEditor(LookupKey.class, new LookUpEditor());
         //jTable1.setDefaultEditor(Lookup.class, new DefaultCellEditor(combBox));
         jTable1.setRowHeight(60);
         

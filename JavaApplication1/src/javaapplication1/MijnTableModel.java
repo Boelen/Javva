@@ -57,4 +57,6 @@ class MijnTableModel extends AbstractTableModel {
         dataContainer.setCellValue(value, row, col);
         fireTableCellUpdated(row, col);
     }
+    
+  
 }

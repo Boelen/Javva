@@ -34,12 +34,8 @@ public class ColorRenderer extends JLabel
                             JTable table, Object object,
                             boolean isSelected, boolean hasFocus,
                             int row, int column) {
-        if (object instanceof LookupKey)
-        {
-            this.setText(((LookupKey)object).getOmschrijving());
-            this.setAlignmentX(CENTER);
-        }
-        else if (object instanceof Color) 
+       
+        if (object instanceof Color) 
         {
         Color newColor = (Color)object;
         setBackground(newColor);

@@ -57,7 +57,7 @@ public class FileChooser extends AbstractCellEditor
         if (EDIT.equals(e.getActionCommand())) {
             //The user has clicked the cell, so
             //bring up the dialog.
-//            button.setIcon(new ImageIcon(huidigeFoto.scaledFoto));
+ //          button.setIcon(new ImageIcon(huidigeFoto.scaledFoto));
             fileChooser.setFileFilter( new ImageFilter());
             int returnVal = fileChooser.showOpenDialog(null);
 
@@ -67,6 +67,7 @@ public class FileChooser extends AbstractCellEditor
             }
             //Make the renderer reappear.
               button.setIcon(new ImageIcon(huidigeFoto.scaledFoto));
+              
             fireEditingStopped();
 
         } 
