@@ -186,10 +186,9 @@ public class JdbcSQLServerConnection {
         ResultSet resultset = stmt.executeQuery(QueryString);
          ResultSetMetaData meta = resultset.getMetaData();
          
-          query += " " + meta.getColumnName(2);                                 //adding the first col name to th query
-            
+          query += " " + meta.getColumnName(2);    
             for(int i = 3; i < (meta.getColumnCount() + 1);i++){                
-                 query += ", " + meta.getColumnName(i) ;                          //adding the column names to the query
+                 query += ", " + meta.getColumnName(i) ;                         
             }
             
             query += " ) VALUES (?";
@@ -264,16 +263,16 @@ public class JdbcSQLServerConnection {
         openConnection();
         
         try{
-            Statement statment = conn.createStatement();                               //creating a statement obj
+            Statement statment = conn.createStatement();                              
             
-            ResultSet resultset = statment.executeQuery(QueryString);              //querying the given table
+            ResultSet resultset = statment.executeQuery(QueryString);              
             
-            ResultSetMetaData meta =  resultset.getMetaData();                        //requesting the meta data
+            ResultSetMetaData meta =  resultset.getMetaData();                        
             
-            sql += " " + meta.getColumnName(2);                                 //adding the first col name to th query
+            sql += " " + meta.getColumnName(2);                                 
             
             for(int i = 3; i < (meta.getColumnCount() + 1);i++){                
-                 sql += " = ?, " + meta.getColumnName(i) ;                          //adding the column names to the query
+                 sql += " = ?, " + meta.getColumnName(i) ;                          
             }
             
             sql += "= ?  WHERE " + meta.getColumnName(1).toString() + " = " + data.elementAt(0).toString();
