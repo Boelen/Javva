@@ -184,6 +184,8 @@ public class NewJFrame extends javax.swing.JFrame {
         }
         
        db.UpdateData(getKey,data);
+       this.dispose();
+       new NewJFrame().setVisible(true);
         }
         catch(Exception ex)
         {

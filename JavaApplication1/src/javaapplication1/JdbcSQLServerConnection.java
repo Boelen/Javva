@@ -8,6 +8,8 @@ package javaapplication1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -252,7 +254,6 @@ public class JdbcSQLServerConnection {
         int getal;
         boolean bool;
         String query;
-        String Fout;
         Foto foto;
        
         String sql = "UPDATE dbo.JavaTable SET ";
@@ -287,32 +288,39 @@ public class JdbcSQLServerConnection {
             if (value instanceof Integer)
             {
                 getal = (Integer) value;
-                ps.setInt(i + 1, getal);
+                ps.setInt(i, getal);
             } else if (value instanceof Boolean) {
                 bool = (Boolean) value;
-                ps.setBoolean(i + 1, bool);
+                ps.setBoolean(i, bool);
             } else if (value instanceof Foto) {
                 
                 foto = (Foto) value;
-                String path = foto.Path;
-                fis = new FileInputStream(foto.Path);
-                ps.setBinaryStream(i + 1, fis, (int) ((File)value).length());
+                Blob blob = foto.file;
+                InputStream in = blob.getBinaryStream();
+                
+                ps.setBinaryStream(i, in, blob.length() );
+                
+                //ps.setBinaryStream(i + 1, in, (int) ((File)value).length());
             }
         }   
               
               
-         ps.executeUpdate();                                               //excecuting the statement
-         
+         ps.executeUpdate();   
+         conn.commit();
          closeConnection();
+         
+        } catch(Exception ex) {
+           
+            String FOUT = ex.getMessage();
+            System.err.println("Caught IOException: " + ex.getMessage());
+        }
+         
+        
             
     }
         
-        catch(Exception ex)
-        {
-            Fout = ex.getMessage();
-            
-        }
+  
     
 }
-}
+
 
